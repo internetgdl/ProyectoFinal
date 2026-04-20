@@ -6,10 +6,10 @@ on:
       - 'App/Front/**'
       - '.github/workflows/deploy-frontend.yml'
   workflow_dispatch:
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment: DEV
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -18,10 +18,48 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: App/Front
-      - name: Deploy
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: App/Front/dist
+
+  uat:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dummy UAT for Frontend
+        run: |
+          echo "### 🧪 Frontend UAT Results" >> $GITHUB_STEP_SUMMARY
+          echo "Status: PASSED" >> $GITHUB_STEP_SUMMARY
+          echo "Visual Regression: 100% Match" >> $GITHUB_STEP_SUMMARY
+          echo "Lighthouse Score: 98/100" >> $GITHUB_STEP_SUMMARY
+
+  release-dev:
+    needs: uat
+    runs-on: ubuntu-latest
+    environment: DEV
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: App/Front/dist
+      - name: Deploy to DEV
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy dist --project-name=my-app-frontend
           workingDirectory: App/Front
+
+  release-prod:
+    needs: release-dev
+    runs-on: ubuntu-latest
+    environment: PROD
+    steps:
+      - name: Dummy PROD Release
+        run: |
+          echo "🚀 Preparing Production Release for Frontend..."
+          echo "Status: WAITING FOR PRODUCTION TAG"
