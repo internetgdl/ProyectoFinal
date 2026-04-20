@@ -32,11 +32,32 @@ jobs:
         run: |
           echo "### 🧪 Frontend UAT Results" >> $GITHUB_STEP_SUMMARY
           echo "Status: PASSED" >> $GITHUB_STEP_SUMMARY
-          echo "Visual Regression: 100% Match" >> $GITHUB_STEP_SUMMARY
-          echo "Lighthouse Score: 98/100" >> $GITHUB_STEP_SUMMARY
+
+  docker-publish:
+    needs: uat
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Frontend Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./App/Front
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/my-app-frontend:latest
+            ghcr.io/${{ github.repository_owner }}/my-app-frontend:${{ github.sha }}
 
   release-dev:
-    needs: uat
+    needs: docker-publish
     runs-on: ubuntu-latest
     environment: DEV
     steps:
@@ -62,4 +83,4 @@ jobs:
       - name: Dummy PROD Release
         run: |
           echo "🚀 Preparing Production Release for Frontend..."
-          echo "Status: WAITING FOR PRODUCTION TAG"
+          echo "Image: ghcr.io/${{ github.repository_owner }}/my-app-frontend:${{ github.sha }}"
