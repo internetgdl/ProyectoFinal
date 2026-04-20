@@ -34,6 +34,9 @@ jobs:
         with:
           name: backend-dist
           path: App/Back
+      - name: Install dependencies
+        run: npm install
+        working-directory: App/Back
       - name: Run UAT Tests
         id: test
         run: |
@@ -53,8 +56,31 @@ jobs:
           name: backend-coverage
           path: App/Back/coverage
 
-  release-dev:
+  docker-publish:
     needs: uat
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Backend Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./App/Back
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/my-app-backend:latest
+            ghcr.io/${{ github.repository_owner }}/my-app-backend:${{ github.sha }}
+
+  release-dev:
+    needs: docker-publish
     runs-on: ubuntu-latest
     environment: DEV
     steps:
@@ -80,4 +106,4 @@ jobs:
         run: |
           echo "🚀 Preparing Production Release..."
           echo "Status: PENDING APPROVAL"
-          echo "This is a dummy job for demonstration."
+          echo "Image: ghcr.io/${{ github.repository_owner }}/my-app-backend:${{ github.sha }}"
