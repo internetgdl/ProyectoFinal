@@ -18,7 +18,7 @@
 		{
 			"binding": "DB",
 			"database_name": "my-app",
-			"database_id": "REPLACE_WITH_D1_DATABASE_ID"
+			"database_id": "2b7bddd7-2e92-43c2-bda0-77329c112939"
 		}
 	]
 }
