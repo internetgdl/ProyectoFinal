@@ -34,6 +34,9 @@ jobs:
         with:
           name: backend-dist
           path: App/Back
+      - name: Install dependencies
+        run: npm install
+        working-directory: App/Back
       - name: Run UAT Tests
         id: test
         run: |
