@@ -32,8 +32,6 @@ jobs:
         run: |
           echo "### 🧪 Frontend UAT Results" >> $GITHUB_STEP_SUMMARY
           echo "Status: PASSED" >> $GITHUB_STEP_SUMMARY
-          echo "Visual Regression: 100% Match" >> $GITHUB_STEP_SUMMARY
-          echo "Lighthouse Score: 98/100" >> $GITHUB_STEP_SUMMARY
 
   docker-publish:
     needs: uat
@@ -85,5 +83,4 @@ jobs:
       - name: Dummy PROD Release
         run: |
           echo "🚀 Preparing Production Release for Frontend..."
-          echo "Status: WAITING FOR PRODUCTION TAG"
           echo "Image: ghcr.io/${{ github.repository_owner }}/my-app-frontend:${{ github.sha }}"
