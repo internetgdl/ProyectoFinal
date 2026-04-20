@@ -2,3 +2,4 @@ Infra/terraform.tfvars
 Infra/.terraform
 Infra/.terraform.lock.hcl
 Infra/terraform.tfstate
+App/Back/coverage
