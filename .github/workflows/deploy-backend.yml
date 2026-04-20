@@ -18,22 +18,12 @@ jobs:
       - name: Build (Typegen)
         run: npm run cf-typegen
         working-directory: App/Back
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-dist
-          path: App/Back
 
   uat:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-dist
-          path: App/Back
       - name: Install dependencies
         run: npm install
         working-directory: App/Back
@@ -85,11 +75,9 @@ jobs:
     environment: DEV
     steps:
       - uses: actions/checkout@v4
-      - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-dist
-          path: App/Back
+      - name: Install dependencies
+        run: npm install
+        working-directory: App/Back
       - name: Deploy to DEV
         uses: cloudflare/wrangler-action@v3
         with:
