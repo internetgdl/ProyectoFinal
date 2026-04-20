@@ -7,7 +7,10 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-app.use('*', cors());
+app.use('*', cors({
+  origin: ['https://my-app-frontend-1hr.pages.dev', 'http://localhost:5173'],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+}));
 
 // --- Students CRUD ---
 
