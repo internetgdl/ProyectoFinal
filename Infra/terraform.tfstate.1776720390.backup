@@ -1,0 +1,133 @@
+{
+  "version": 4,
+  "terraform_version": "1.12.2",
+  "serial": 3,
+  "lineage": "1d5c0d00-56f6-5720-6545-9ebb39c5b0f7",
+  "outputs": {},
+  "resources": [
+    {
+      "module": "module.pages",
+      "mode": "managed",
+      "type": "cloudflare_pages_project",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/cloudflare/cloudflare\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "account_id": "4b3a5ad916d9a620d75beefea58cc1e0",
+            "build_config": [],
+            "created_on": "2026-04-20T20:57:38Z",
+            "deployment_configs": [
+              {
+                "preview": [
+                  {
+                    "always_use_latest_compatibility_date": false,
+                    "compatibility_date": "2026-04-20",
+                    "compatibility_flags": [],
+                    "d1_databases": {},
+                    "durable_object_namespaces": {},
+                    "environment_variables": {},
+                    "fail_open": false,
+                    "kv_namespaces": {},
+                    "placement": [],
+                    "r2_buckets": {},
+                    "secrets": {},
+                    "service_binding": [],
+                    "usage_model": "standard"
+                  }
+                ],
+                "production": [
+                  {
+                    "always_use_latest_compatibility_date": false,
+                    "compatibility_date": "2026-04-20",
+                    "compatibility_flags": [],
+                    "d1_databases": {},
+                    "durable_object_namespaces": {},
+                    "environment_variables": {},
+                    "fail_open": false,
+                    "kv_namespaces": {},
+                    "placement": [],
+                    "r2_buckets": {},
+                    "secrets": {},
+                    "service_binding": [],
+                    "usage_model": "standard"
+                  }
+                ]
+              }
+            ],
+            "domains": [
+              "mi-proyecto-sencillo2.pages.dev"
+            ],
+            "id": "mi-proyecto-sencillo2",
+            "name": "mi-proyecto-sencillo2",
+            "production_branch": "main",
+            "source": [],
+            "subdomain": "mi-proyecto-sencillo2.pages.dev"
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "deployment_configs"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": 0,
+                  "type": "number"
+                }
+              },
+              {
+                "type": "get_attr",
+                "value": "preview"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": 0,
+                  "type": "number"
+                }
+              },
+              {
+                "type": "get_attr",
+                "value": "secrets"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "deployment_configs"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": 0,
+                  "type": "number"
+                }
+              },
+              {
+                "type": "get_attr",
+                "value": "production"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": 0,
+                  "type": "number"
+                }
+              },
+              {
+                "type": "get_attr",
+                "value": "secrets"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}
