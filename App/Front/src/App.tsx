@@ -19,7 +19,7 @@ function ErrorButton() {
         console.log('User triggered test error');
         
         // Send a test metric
-        Sentry.metrics.increment('test_error_button_click', 1);
+        Sentry.metrics.count('test_error_button_click', 1);
         
         // Throw the error
         throw new Error('Sentry Frontend Test Error: Break the world!');
