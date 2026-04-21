@@ -16,7 +16,16 @@ function ErrorButton() {
       }}
       onClick={() => {
         // Send a log before throwing the error
-        console.log('User triggered test error');
+        Sentry.captureMessage('User triggered test log', { 
+          level: 'info',
+          extra: { log_source: 'sentry_test' }
+        });
+        
+        Sentry.addBreadcrumb({
+          category: 'auth',
+          message: 'User clicked the debug error button',
+          level: 'info',
+        });
         
         // Send a test metric
         Sentry.metrics.count('test_error_button_click', 1);
