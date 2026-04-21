@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { withSentry } from '@sentry/cloudflare';
 
 type Bindings = {
 	DB: D1Database;
@@ -60,8 +61,20 @@ app.put('/books/:id', async (c) => {
 
 app.delete('/books/:id', async (c) => {
 	const id = c.req.param('id');
+	if (!id) throw new Error('Missing Book ID');
 	const { success } = await c.env.DB.prepare('DELETE FROM books WHERE id = ?').bind(id).run();
 	return c.json({ success });
 });
 
-export default app;
+// Test error endpoint for Sentry
+app.get('/debug-error', (c) => {
+	throw new Error('Sentry Backend Test Error!');
+});
+
+export default withSentry(
+	(env) => ({
+		dsn: "https://26de7068b429df2e32c8ea43d88a546a@o4511000822611968.ingest.us.sentry.io/4511254995861504",
+		tracesSampleRate: 1.0,
+	}),
+	app
+);
